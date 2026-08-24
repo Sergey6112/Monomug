@@ -11,9 +11,12 @@ const scaleRange = document.getElementById('scaleRange');
 const rotationRange = document.getElementById('rotationRange');
 const scaleOut = document.getElementById('scaleOut');
 const rotationOut = document.getElementById('rotationOut');
+const mugColorName = document.getElementById('mugColorName');
 
 const state = { image:null, x:canvas.width/2, y:canvas.height/2, scale:1, rotation:0, dragging:false, lastX:0, lastY:0 };
 let mugTexture, renderer, scene, camera, controls, mugRoot;
+let mugColorMaterial = null;
+let mugColor = '#ffffff';
 let autoRotate = false;
 
 function drawEditor(showGuides=true){
@@ -40,6 +43,18 @@ function drawEditor(showGuides=true){
 }
 
 function refreshTexture(){ if(mugTexture) mugTexture.needsUpdate=true; }
+function applyMugColor(color, colorName='Белый'){
+  mugColor=color;
+  if(mugColorMaterial){
+    mugColorMaterial.color.set(color);
+    mugColorMaterial.needsUpdate=true;
+  }
+  if(mugColorName) mugColorName.value=colorName;
+  document.querySelectorAll('[data-mug-color]').forEach(btn=>btn.classList.toggle('active',btn.dataset.mugColor.toLowerCase()===color.toLowerCase()));
+}
+
+document.querySelectorAll('[data-mug-color]').forEach(btn=>btn.addEventListener('click',()=>applyMugColor(btn.dataset.mugColor,btn.dataset.colorName)));
+
 function setScaleUI(){ scaleRange.value=Math.round(state.scale*100); scaleOut.value=`${Math.round(state.scale*100)}%`; rotationRange.value=state.rotation; rotationOut.value=`${Math.round(state.rotation)}°`; }
 
 function loadImage(file){
@@ -80,7 +95,7 @@ function init3D(){
 
   new GLTFLoader().load('mug.glb',gltf=>{
     mugRoot=gltf.scene; scene.add(mugRoot);
-    mugRoot.traverse(o=>{if(!o.isMesh)return;o.castShadow=true;o.receiveShadow=true; const mats=Array.isArray(o.material)?o.material:[o.material];mats.forEach(mat=>{if(!mat)return;if(mat.name==='art_here'){mat.map=mugTexture;mat.color.set(0xffffff);mat.roughness=.32;mat.metalness=0;}else{mat.color.set(0xffffff);mat.roughness=.28;mat.metalness=0;}mat.needsUpdate=true;});});
+    mugRoot.traverse(o=>{if(!o.isMesh)return;o.castShadow=true;o.receiveShadow=true; const mats=Array.isArray(o.material)?o.material:[o.material];mats.forEach(mat=>{if(!mat)return;if(mat.name==='art_here'){mat.map=mugTexture;mat.color.set(0xffffff);mat.roughness=.32;mat.metalness=0;}else if(mat.name==='flat_color_here'){mugColorMaterial=mat;mat.color.set(mugColor);mat.roughness=.28;mat.metalness=0;}else if(mat.name==='Material'){mat.color.set(0xffffff);mat.roughness=.28;mat.metalness=0;}mat.needsUpdate=true;});});
     const box=new THREE.Box3().setFromObject(mugRoot), size=box.getSize(new THREE.Vector3()), center=box.getCenter(new THREE.Vector3());mugRoot.position.sub(center); const s=1.35/Math.max(size.x,size.y,size.z);mugRoot.scale.setScalar(s); mugRoot.position.y+=.02;
     loaderEl.style.display='none'; drawEditor();
   },undefined,err=>{loaderEl.innerHTML='<b>Не удалось загрузить mug.glb</b><small>Откройте страницу через локальный сервер, а не двойным кликом.</small>';console.error(err)});
@@ -91,10 +106,10 @@ function init3D(){
 
 document.getElementById('rotateBtn').onclick=()=>{autoRotate=!autoRotate;document.getElementById('rotateBtn').style.background=autoRotate?'#171717':'#fff';document.getElementById('rotateBtn').style.color=autoRotate?'#fff':'#222'};
 document.getElementById('resetViewBtn').onclick=()=>{camera.position.set(1.7,.55,1.85);controls.target.set(.05,-.03,0);controls.update()};
-document.getElementById('resetAllBtn').onclick=()=>{state.image=null;state.x=canvas.width/2;state.y=canvas.height/2;state.scale=1;state.rotation=0;fileInput.value='';setScaleUI();drawEditor();camera.position.set(1.7,.55,1.85);controls.target.set(.05,-.03,0)};
+document.getElementById('resetAllBtn').onclick=()=>{state.image=null;state.x=canvas.width/2;state.y=canvas.height/2;state.scale=1;state.rotation=0;fileInput.value='';applyMugColor('#ffffff','Белый');setScaleUI();drawEditor();camera.position.set(1.7,.55,1.85);controls.target.set(.05,-.03,0)};
 
 function downloadData(url,name){const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove()}
-document.getElementById('downloadPrintBtn').onclick=()=>{if(!state.image){alert('Сначала загрузите изображение.');return;}drawEditor(false);downloadData(canvas.toDataURL('image/png'),'monoprint-mug-210x95mm.png');drawEditor(true)};
+document.getElementById('downloadPrintBtn').onclick=()=>{if(!state.image){alert('Сначала загрузите изображение.');return;}drawEditor(false);downloadData(canvas.toDataURL('image/png'),'monoprint-mug-210x85mm.png');drawEditor(true)};
 document.getElementById('downloadPreviewBtn').onclick=()=>{renderer.render(scene,camera);downloadData(renderer.domElement.toDataURL('image/png'),'monoprint-mug-preview.png')};
 
 drawEditor();init3D();

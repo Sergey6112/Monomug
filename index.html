@@ -49,20 +49,36 @@
             <button class="icon-btn" id="resetViewBtn" title="Сбросить ракурс">⌂</button>
           </div>
         </div>
+        <div class="mug-color-control" aria-label="Цвет ручки и внутренней части кружки">
+          <div class="mug-color-label">
+            <span>Цвет ручки и внутри</span>
+            <output id="mugColorName">Белый</output>
+          </div>
+          <div class="mug-color-swatches" id="mugColorSwatches">
+            <button type="button" class="color-swatch active" data-mug-color="#ffffff" data-color-name="Белый" style="--swatch:#ffffff" aria-label="Белый" title="Белый"></button>
+            <button type="button" class="color-swatch" data-mug-color="#111111" data-color-name="Чёрный" style="--swatch:#111111" aria-label="Чёрный" title="Чёрный"></button>
+            <button type="button" class="color-swatch" data-mug-color="#1756b3" data-color-name="Синий" style="--swatch:#1756b3" aria-label="Синий" title="Синий"></button>
+            <button type="button" class="color-swatch" data-mug-color="#d92b2b" data-color-name="Красный" style="--swatch:#d92b2b" aria-label="Красный" title="Красный"></button>
+            <button type="button" class="color-swatch" data-mug-color="#FDD835" data-color-name="Жёлтый" style="--swatch:#FDD835" aria-label="Жёлтый" title="Жёлтый"></button>
+            <button type="button" class="color-swatch" data-mug-color="#7b1e2b" data-color-name="Бордовый" style="--swatch:#7b1e2b" aria-label="Бордовый" title="Бордовый"></button>
+            <button type="button" class="color-swatch" data-mug-color="#2E7D32" data-color-name="Зелёный" style="--swatch:#2E7D32" aria-label="Зелёный" title="Зелёный"></button>
+          </div>
+        </div>
+
         <div id="viewer" class="viewer">
           <div class="loader" id="loader"><span></span><b>Загружаем 3D-модель…</b></div>
           <div class="viewer-hint">Зажмите мышь и вращайте · колесо - масштаб</div>
         </div>
         <div class="viewer-footer">
           <span><i class="status-dot"></i> 3D-модель GLB</span>
-          <span>Печать: 210 × 95 мм</span>
+          <span>Печать: 210 х 85мм</span>
         </div>
       </article>
 
       <article class="panel editor-panel">
         <div class="panel-head compact">
           <div><span class="panel-kicker">МАКЕТ ДЛЯ ПЕЧАТИ</span><h2>Редактор</h2></div>
-          <span class="size-badge">210 × 95 мм</span>
+          <span class="size-badge">210 х 85 мм</span>
         </div>
 
         <label class="upload-zone" id="uploadZone">
@@ -83,7 +99,7 @@
 
         <div class="print-stage-wrap">
           <div class="ruler ruler-top"><span>0</span><span>52,5</span><span>105</span><span>157,5</span><span>210 мм</span></div>
-          <div class="ruler ruler-left"><span>0</span><span>47,5</span><span>95</span></div>
+          <div class="ruler ruler-left"><span>0</span><span>42,5</span><span>85 мм</span></div>
           <canvas id="printCanvas" width="1260" height="570"></canvas>
           <div class="safe-note">пунктир - безопасная зона</div>
         </div>
