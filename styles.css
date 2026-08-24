@@ -90,3 +90,81 @@
     padding-top:98px;
   }
 }
+
+/* --- Fixed background logo + foreground controls --- */
+.topbar{
+  grid-template-columns:1fr 1fr;
+  z-index:60;
+  pointer-events:none;
+}
+.topbar .back-link{
+  grid-column:1;
+  justify-self:start;
+  pointer-events:auto;
+}
+.topbar .ghost-btn{
+  grid-column:2;
+  justify-self:end;
+  pointer-events:auto;
+}
+.topbar .brand{display:none!important}
+
+.floating-brand{
+  position:fixed;
+  top:4px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1;
+  display:block;
+  width:290px;
+  height:100px;
+  pointer-events:auto;
+  text-decoration:none;
+}
+.floating-brand-logo{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center top;
+  display:block;
+}
+
+.page-shell{
+  position:relative;
+  z-index:10;
+}
+
+.intro-copy{
+  position:relative;
+  z-index:2;
+  padding:16px 20px 17px;
+  margin:-16px 0 -17px -20px;
+  border-radius:20px;
+  background:rgba(255,255,255,.56);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+}
+
+@supports not ((backdrop-filter:blur(8px)) or (-webkit-backdrop-filter:blur(8px))){
+  .intro-copy{background:rgba(255,255,255,.82)}
+}
+
+@media(max-width:650px){
+  .topbar{
+    grid-template-columns:1fr 1fr;
+  }
+  .floating-brand{
+    top:1px;
+    width:205px;
+    height:76px;
+  }
+  .page-shell{
+    padding-top:102px;
+  }
+  .intro-copy{
+    padding:14px 14px 15px;
+    margin:-14px 0 -15px -14px;
+    border-radius:17px;
+    background:rgba(255,255,255,.60);
+  }
+}
