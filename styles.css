@@ -18,3 +18,34 @@
   .topbar .ghost-btn{justify-self:end;margin:0}
   .back-link{font-size:24px}
 }
+
+.back-link{
+  width:46px;
+  height:46px;
+  border:0;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 8px 22px rgba(0,0,0,.10);
+  display:grid;
+  place-items:center;
+  color:#202020;
+  transition:transform .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.back-link:hover{
+  background:#fff;
+  transform:translateX(-1px);
+  box-shadow:0 10px 26px rgba(0,0,0,.13);
+}
+.back-chevron{
+  width:22px;
+  height:22px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+@media(max-width:650px){
+  .back-link{width:44px;height:44px}
+  .back-chevron{width:21px;height:21px}
+}
